@@ -721,6 +721,39 @@ const emptyIpo = {
 
 type IpoForm = typeof emptyIpo;
 
+function mapIpoToForm(ipo: IpoRecord): IpoForm {
+	return {
+		id: ipo.id ?? null,
+		company_name: ipo.company_name ?? '',
+		symbol: ipo.symbol ?? '',
+		year: ipo.year ?? String(new Date().getFullYear()),
+		exchange: ipo.exchange ?? 'NSE + BSE',
+		sector: ipo.sector ?? 'Technology',
+
+		ipo_price: ipo.ipo_price?.toString() ?? '',
+
+		lot_size: ipo.lot_size?.toString() ?? '',
+		lots_applied: ipo.lots_applied?.toString() ?? '',
+		allotted: ipo.allotted ?? 'Yes',
+
+		qty_allotted: ipo.qty_allotted?.toString() ?? '',
+		amount_applied: ipo.amount_applied?.toString() ?? '',
+		amount_paid: ipo.amount_paid?.toString() ?? '',
+
+		listing_date: ipo.listing_date ?? '',
+		listing_price: ipo.listing_price?.toString() ?? '',
+		selling_price: ipo.selling_price?.toString() ?? '',
+		selling_date: ipo.selling_date ?? '',
+
+		status: ipo.status ?? 'Sold on Listing',
+
+		account_id: ipo.account_id?.toString() ?? '',
+		notes: ipo.notes ?? '',
+		gmp_at_apply: ipo.gmp_at_apply?.toString() ?? '',
+		subscription_times: ipo.subscription_times?.toString() ?? '',
+	};
+}
+
 function IPOModal({
 	ipo,
 	accounts,
@@ -732,40 +765,9 @@ function IPOModal({
 	onSave: (r: IpoRecord) => void;
 	onClose: () => void;
 }) {
-	const [form, setForm] = useState<IpoForm>(() => {
-		if (!ipo) return emptyIpo;
-
-		return {
-			id: ipo.id ?? null,
-			company_name: ipo.company_name ?? '',
-			symbol: ipo.symbol ?? '',
-			year: ipo.year ?? String(new Date().getFullYear()),
-			exchange: ipo.exchange ?? 'NSE + BSE',
-			sector: ipo.sector ?? 'Technology',
-
-			ipo_price: ipo.ipo_price?.toString() ?? '',
-
-			lot_size: ipo.lot_size?.toString() ?? '',
-			lots_applied: ipo.lots_applied?.toString() ?? '',
-			allotted: ipo.allotted ?? 'Yes',
-
-			qty_allotted: ipo.qty_allotted?.toString() ?? '',
-			amount_applied: ipo.amount_applied?.toString() ?? '',
-			amount_paid: ipo.amount_paid?.toString() ?? '',
-
-			listing_date: ipo.listing_date ?? '',
-			listing_price: ipo.listing_price?.toString() ?? '',
-			selling_price: ipo.selling_price?.toString() ?? '',
-			selling_date: ipo.selling_date ?? '',
-
-			status: ipo.status ?? 'Sold on Listing',
-
-			account_id: ipo.account_id?.toString() ?? '',
-			notes: ipo.notes ?? '',
-			gmp_at_apply: ipo.gmp_at_apply?.toString() ?? '',
-			subscription_times: ipo.subscription_times?.toString() ?? '',
-		};
-	});
+	const [form, setForm] = useState<IpoForm>(() =>
+		ipo ? mapIpoToForm(ipo) : emptyIpo,
+	);
 
 	const chg = (
 		e: React.ChangeEvent<
