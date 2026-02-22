@@ -4,50 +4,53 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
+  // DATABASE_URL  = Transaction pooler  → host: aws-0-REGION.pooler.supabase.com  port: 6543  (add ?pgbouncer=true&connection_limit=1)
+  // DIRECT_URL    = Session pooler      → host: aws-0-REGION.pooler.supabase.com  port: 5432
+  // ❌ NEVER use db.xxxx.supabase.co:5432 — that direct host is firewalled by Supabase
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model Trade {
-  id         BigInt   @id
-  userId     String   @map("user_id")
+  id         BigInt    @id
+  userId     String    @map("user_id")
   symbol     String
-  sector     String   @default("Technology")
-  status     String   @default("Running")
-  buyPrice   Decimal  @map("buy_price")
+  sector     String    @default("Technology")
+  status     String    @default("Running")
+  buyPrice   Decimal   @map("buy_price")
   qty        Decimal
   sl         Decimal
   target     Decimal?
-  buyDate    DateTime @map("buy_date") @db.Date
+  buyDate    DateTime  @map("buy_date") @db.Date
   reason     String?
   timing     String?
-  imageUrl   String?  @map("image_url")
-  chartLink  String?  @map("chart_link")
+  imageUrl   String?   @map("image_url")
+  chartLink  String?   @map("chart_link")
   tags       String?
-  exitPrice  Decimal? @map("exit_price")
+  exitPrice  Decimal?  @map("exit_price")
   exitDate   DateTime? @map("exit_date") @db.Date
   deployed   Decimal?
-  createdAt  DateTime @default(now()) @map("created_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
 
   @@map("trades")
 }
 
 model IpoAccount {
-  id             BigInt      @id
-  userId         String      @map("user_id")
-  holderName     String      @map("holder_name")
-  pan            String?
-  dematName      String?     @map("demat_name")
-  dematProvider  String      @default("Zerodha") @map("demat_provider")
-  dematId        String?     @map("demat_id")
-  bank           String?
-  upiId          String?     @map("upi_id")
-  phone          String?
-  email          String?
-  category       String      @default("Retail")
-  notes          String?
-  createdAt      DateTime    @default(now()) @map("created_at")
-  ipoRecords     IpoRecord[]
+  id            BigInt      @id
+  userId        String      @map("user_id")
+  holderName    String      @map("holder_name")
+  pan           String?
+  dematName     String?     @map("demat_name")
+  dematProvider String      @default("Zerodha") @map("demat_provider")
+  dematId       String?     @map("demat_id")
+  bank          String?
+  upiId         String?     @map("upi_id")
+  phone         String?
+  email         String?
+  category      String      @default("Retail")
+  notes         String?
+  createdAt     DateTime    @default(now()) @map("created_at")
+  ipoRecords    IpoRecord[]
 
   @@map("ipo_accounts")
 }

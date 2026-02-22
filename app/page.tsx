@@ -198,7 +198,20 @@ const emptyAccount = { id: null as number | null, holder_name: '', pan: '', dema
 type AccountForm = typeof emptyAccount
 
 function AccountModal({ account, onSave, onClose }: { account: IpoAccount | null; onSave: (a: IpoAccount) => void; onClose: () => void }) {
-  const [form, setForm] = useState<AccountForm>(account ? { ...account } : emptyAccount)
+  const [form, setForm] = useState<AccountForm>(account ? {
+    id:             account.id,
+    holder_name:    account.holder_name,
+    pan:            account.pan            ?? '',
+    demat_name:     account.demat_name     ?? '',
+    demat_provider: account.demat_provider,
+    demat_id:       account.demat_id       ?? '',
+    bank:           account.bank           ?? '',
+    upi_id:         account.upi_id         ?? '',
+    phone:          account.phone          ?? '',
+    email:          account.email          ?? '',
+    category:       account.category,
+    notes:          account.notes          ?? '',
+  } : emptyAccount)
   const chg = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   const w = useWindowWidth(); const isMob = w < 600
   return (
